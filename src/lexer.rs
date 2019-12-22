@@ -25,13 +25,26 @@ impl<'input> Lexer<'input> {
     pub fn tokenize(&mut self) -> Option<Token> {
         self.skip_whitespace();
         self.byte_at(self.loc.abs).map(|byte| {
-            match byte {
-                b if is_numeric(b) => Token::new(TokenKind::Number(1), self.loc.clone()),
+            let token = match byte {
+                b if is_numeric(b) => self.new_token(TokenKind::Number(1)),
+                b if is_alphabetic(b) => self.new_token(TokenKind::Number(1)),
+                b'+' => self.new_token(TokenKind::Plus),
+                b'-' => self.new_token(TokenKind::Minus),
+                b'*' => self.new_token(TokenKind::Asterisk),
+                b'/' => self.new_token(TokenKind::Slash),
+                b'(' => self.new_token(TokenKind::LParen),
+                b')' => self.new_token(TokenKind::RParen),
+                b'{' => self.new_token(TokenKind::LBrace),
+                b'}' => self.new_token(TokenKind::RBrace),
+                b';' => self.new_token(TokenKind::Semicolon),
+                b'=' => self.new_token(TokenKind::Equal),
+                b'<' => self.new_token(TokenKind::LessThan),
                 _ => {
                     error(&format!("unknown byte found: '{}'", byte as char));
                     unreachable!();
                 }
-            }
+            };
+            token
         })
     }
 
@@ -51,6 +64,10 @@ impl<'input> Lexer<'input> {
         } else {
             Some(self.code.as_bytes()[index])
         }
+    }
+
+    fn new_token(&self, kind: TokenKind) -> Token {
+        Token::new(kind, self.loc.clone())
     }
 }
 
