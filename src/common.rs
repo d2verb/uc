@@ -46,9 +46,9 @@ impl Loc {
         }
     }
 
-    pub fn advance(&mut self, ch: u8) {
+    pub fn advance(&mut self, byte: u8) {
         self.abs += 1;
-        if ch == b'\n' {
+        if byte == b'\n' {
             self.lin += 1;
             self.col = 1;
         } else {
@@ -70,4 +70,30 @@ impl<T> Annot<T> {
             loc
         }
     }
+}
+
+pub fn is_whitespace(byte: u8) -> bool {
+    match byte {
+        b'\n' | b'\t' | b' ' => true,
+        _ => false
+    }
+}
+
+pub fn is_alphabetic(byte: u8) -> bool {
+    match byte {
+        b'a' ... b'z' => true,
+        b'A' ... b'Z' => true,
+        _ => false
+    }
+}
+
+pub fn is_numeric(byte: u8) -> bool {
+    match byte {
+        b'0' ... b'9' => true,
+        _ => false
+    }
+}
+
+pub fn is_alphanumeric(byte: u8) -> bool {
+    is_alphabetic(byte) | is_numeric(byte)
 }

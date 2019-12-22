@@ -18,7 +18,6 @@ pub enum TokenKind {
     Semicolon,
     Equal,
     LessThan,
-    Eof,
 }
 
 pub type Token = Annot<TokenKind>;
