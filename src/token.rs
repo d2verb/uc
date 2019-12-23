@@ -1,5 +1,6 @@
 use crate::common::Annot;
 
+#[derive(Debug, PartialEq, Eq)]
 pub enum TokenKind {
     Number(i64),
     Name(String),
