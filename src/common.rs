@@ -22,11 +22,14 @@ pub fn compile(filename: &str) {
         Ok(_) => {},
     }
 
-    let mut lexer = Lexer::new(&content);
+    let mut lexer_iter = Lexer::new(&content).into_iter();
+    while let Some(token) = lexer_iter.next() {
+        println!("{:?}", token);
+    }
 }
 
 pub fn error(msg: &str) {
-    eprintln!("{} {}", "error:".red().bold(), msg);
+    eprintln!("{}{}", "error:".red().bold(), msg);
     std::process::exit(1);
 }
 

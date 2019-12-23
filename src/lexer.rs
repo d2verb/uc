@@ -44,7 +44,10 @@ impl<'input> Lexer<'input> {
                 b'=' => self.new_token(TokenKind::Equal),
                 b'<' => self.new_token(TokenKind::LessThan),
                 _ => {
-                    error(&format!("unknown byte found: '{}'", byte as char));
+                    error(&format!("{}:{}: unknown byte found: '{}'",
+                                   self.loc.lin,
+                                   self.loc.col,
+                                   byte as char));
                     unreachable!();
                 }
             };
